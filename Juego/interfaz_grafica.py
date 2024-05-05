@@ -56,3 +56,37 @@ if __name__ == "__main__":
     # juego = Juego([Jugador("Jugador 1")])
     # game_loop(juego)
     pass
+
+import requests
+
+# Reemplaza 'YOUR_API_KEY' con tu clave de API de SerpApi
+api_key = 'b2696886ce070a16f352f6bf3a5a7a0a45df24c0f9375f3930099dc54870f654'
+
+# Definir la consulta de búsqueda
+query = "¿Quién pintó la Mona Lisa?"
+
+# Ajustar el número de resultados por página para limitar los resultados a 3 páginas
+num_results_per_page = 1  # Asumiendo 10 resultados por página
+total_pages = 1  # Total de páginas que deseas obtener
+num = num_results_per_page * total_pages  # Calcular el número total de resultados
+
+# Realizar la solicitud GET a la API de SerpApi
+response = requests.get(
+    f"https://serpapi.com/search?engine=duckduckgo&q={query}&api_key={api_key}&num={num}"
+)
+
+# Verificar si la solicitud fue exitosa
+if response.status_code == 200:
+    # Convertir la respuesta a JSON
+    data = response.json()
+
+    # Filtrar e imprimir solo las descripciones de los resultados de búsqueda, limitando a 3 líneas
+    for result in data['organic_results']:
+        lines = result['snippet'].split('\n')
+        if len(lines) > 3:
+            # Limita la descripción a las primeras 3 líneas
+            print('\n'.join(lines[:3]))
+        else:
+            print(result['snippet'])  # Muestra todo el texto si hay menos de 3 líneas
+else:
+    print(f"Error: {response.status_code}")

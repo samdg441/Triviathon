@@ -1,5 +1,5 @@
 import random
-
+import requests
 class Jugador:
     def __init__(self, nombre):
         self.nombre = nombre
@@ -51,6 +51,33 @@ class Ayuda:
             return None
         self.ayudas_usadas += 1
         return self.juego.obtener_pregunta_aleatoria()
+    def ayuda_api(self, pregunta):
+        if self.ayudas_usadas >= self.total_categorias:
+            print("No puedes usar más ayudas.")
+            return
+        self.ayudas_usadas += 1
+        api_key = 'b2696886ce070a16f352f6bf3a5a7a0a45df24c0f9375f3930099dc54870f654'
+        query = pregunta.pregunta
+
+        num_results_per_page = 1
+        total_pages = 1
+        num = num_results_per_page * total_pages
+
+        response = requests.get(
+            f"https://serpapi.com/search?engine=duckduckgo&q={query}&api_key={api_key}&num={num}"
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            for result in data['organic_results']:
+                lines = result['snippet'].split('\n')
+                if len(lines) > 3:
+                    print('\n'.join(lines[:3]))
+                else:
+                    print(result['snippet'])
+        else:
+            print(f"Error: {response.status_code}")
+
 
 categorias = {
     "Historia": [
@@ -213,7 +240,8 @@ class Juego:
         print("Opciones de ayuda:")
         print("1. Usar 50/50")
         print("2. Cambiar de pregunta")
-        ayuda_opcion = input("Elige una opción de ayuda (1/2) o presiona Enter para continuar sin ayuda: ")
+        print("3. Usar ayuda de la API")  # Nueva opción de ayuda
+        ayuda_opcion = input("Elige una opción de ayuda (1/2/3) o presiona Enter para continuar sin ayuda: ")
 
         if ayuda_opcion == "1":
             pregunta = ayuda.ayuda_50_50(pregunta)
@@ -228,6 +256,8 @@ class Juego:
             print(pregunta.pregunta)
             for letra, respuesta in zip("ABCD", pregunta.respuestas):
                 print(f"{letra}. {respuesta}")
+        elif ayuda_opcion == "3":
+            ayuda.ayuda_api(pregunta)
 
         respuesta_usuario = input("Elige una respuesta (A/B/C/D): ")
 
