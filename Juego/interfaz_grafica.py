@@ -1,92 +1,148 @@
 import pygame
-from pygame.locals import *
 import sys
-
-# Asegúrate de importar la clase Juego y cualquier otra clase necesaria desde tu archivo principal
-# Por ejemplo:
-# from juego import Juego, Jugador, Pregunta, Ronda, Ayuda
+import random
 
 # Inicializar Pygame
 pygame.init()
 
-# Configuración de la ventana
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Triviathon')
+# Definir las pantallas disponibles
+pantallas = {
+    'inicio': 'Pantalla de inicio',
+    'seleccion_categorias': 'Pantalla de selección de categorías',
+    # Puedes agregar más pantallas aquí según sea necesario
+}
 
-# Configuración de fuentes
-font = pygame.font.Font(None, 36)
+# Definir categorias_seleccionadas como una lista vacía
+categorias_seleccionadas = []
 
-def draw_text(text, font, color, x, y):
-    text_surface = font.render(text, True, color)
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x, y)
-    screen.blit(text_surface, text_rect)
+# Mantener el estado actual de la pantalla
+estado_actual = 'inicio'
 
-def handle_input(event):
-    if event.type == MOUSEBUTTONDOWN:
-        # Aquí puedes manejar los clics del mouse para seleccionar respuestas
-        pass
+def cambiar_pantalla(nueva_pantalla):
+    global estado_actual
+    estado_actual = nueva_pantalla
+    print(f"Estado actual cambiado a: {estado_actual}")
 
-def game_loop(juego):
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                running = False
-            handle_input(event)
+# Configurar la pantalla
+screen_width = 660
+screen_height = 650
+screen = pygame.display.set_mode((screen_width, screen_height))
 
-        # Limpiar la pantalla
-        screen.fill((0, 0, 0))
+# Cargar las imágenes
+background_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\Captura.PNG"
+background_image = pygame.image.load(background_image_path)
+start_button_image = pygame.image.load("C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.start-removebg-preview.png")
+titulo_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\titulo2-removebg-preview.png"
+titulo_image = pygame.image.load(titulo_image_path)
 
-        # Aquí puedes agregar lógica para mostrar preguntas y opciones de respuesta
-        # Por ejemplo, si tienes una pregunta actual en tu juego:
-        # pregunta_actual = juego.pregunta_actual
-        # draw_text(pregunta_actual.pregunta, font, (255, 255, 255), SCREEN_WIDTH // 2, 100)
+# Cargar las imágenes de los botones de categoría
+categoria_button_images = [pygame.image.load(f"C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\categoria-removebg-preview-{i}.png") for i in range(1, 9)]
+next_button_image = pygame.image.load("C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.next-removebg-preview.png")
 
-        # Actualizar la pantalla
-        pygame.display.flip()
+# Crear los rectángulos para los botones de categoría
+categoria_button_rects = []
+for i in range(8):  # Asumiendo que tienes 8 categorías
+    rect = categoria_button_images[i].get_rect(topleft=(50, 50 + i * 70))  # Ajusta x_pos y y_pos según la posición deseada
+    categoria_button_rects.append(rect)
 
+# Crear el rectángulo para el botón "Siguiente"
+next_button_rect = next_button_image.get_rect(topleft=(210, 500))  # Ajusta x_pos y y_pos según la posición deseada
+
+# Función para manejar el evento de cierre de la ventana
+def close_window():
     pygame.quit()
+    sys.exit()
 
-if __name__ == "__main__":
-    # Crear una instancia de Juego
-    # Por ejemplo:
-    # juego = Juego([Jugador("Jugador 1")])
-    # game_loop(juego)
-    pass
+# Función para manejar el evento de clic en el botón de inicio
+def on_start_button_click():
+    global estado_actual
+    cambiar_pantalla('seleccion_categorias')
 
-import requests
+# Función para manejar la selección de categorías
+# Función para manejar la selección de categorías
+def seleccionar_categoria():
+    global categorias_seleccionadas
+    # Limpiar la lista de categorías seleccionadas
+    categorias_seleccionadas = []
+    # Mostrar las categorías disponibles
+    y_pos = 150
+    for i, categoria in enumerate(categoria_button_images):
+        categoria_rect = categoria.get_rect(topleft=(50 + (i % 3) * 220, y_pos))
+        screen.blit(categoria, categoria_rect)
+        if (i + 1) % 3 == 0:  # Ajustar la posición y para la última categoría de cada fila
+            y_pos += 120
 
-# Reemplaza 'YOUR_API_KEY' con tu clave de API de SerpApi
-api_key = 'b2696886ce070a16f352f6bf3a5a7a0a45df24c0f9375f3930099dc54870f654'
+    # Dibujar el botón "Next" debajo de las categorías
+    next_button_rect = next_button_image.get_rect(topleft=(210, y_pos + 100))  # Ajusta la posición y según sea necesario
+    screen.blit(next_button_image, next_button_rect)
 
-# Definir la consulta de búsqueda
-query = "¿Quién pintó la Mona Lisa?"
+    # Actualizar la pantalla
+    pygame.display.flip()
 
-# Ajustar el número de resultados por página para limitar los resultados a 3 páginas
-num_results_per_page = 1  # Asumiendo 10 resultados por página
-total_pages = 1  # Total de páginas que deseas obtener
-num = num_results_per_page * total_pages  # Calcular el número total de resultados
+    # Esperar a que el usuario seleccione una categoría o haga clic en "Siguiente"
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                close_window()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for i, categoria_rect in enumerate(categoria_button_rects):
+                    if categoria_rect.collidepoint(mouse_pos):
+                        # Agregar la categoría seleccionada a la lista
+                        categorias_seleccionadas.append(categoria_button_images[i])
+                        print(f"Categoría seleccionada: {categoria_button_images[i]}")
+                        # Actualizar la pantalla después de la selección
+                        seleccionar_categoria()
+                        return
+                if next_button_rect.collidepoint(mouse_pos):
+                    # Aquí manejas el clic en el botón "Siguiente"
+                    # Por ejemplo, puedes verificar si se seleccionaron 3 categorías y luego iniciar el juego
+                    iniciar_juego()
+                    return
 
-# Realizar la solicitud GET a la API de SerpApi
-response = requests.get(
-    f"https://serpapi.com/search?engine=duckduckgo&q={query}&api_key={api_key}&num={num}"
-)
+# Bucle principal del juego
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            close_window()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if estado_actual == 'inicio':
+                if start_button_image.get_rect(topleft=(210, 500)).collidepoint(mouse_pos):
+                    on_start_button_click()
+            elif estado_actual == 'seleccion_categorias':
+                for i, rect in enumerate(categoria_button_rects):
+                    if rect.collidepoint(mouse_pos):
+                        # Aquí manejas el clic en un botón de categoría
+                        categoria_seleccionada = categoria_button_images[i]  # Accede a la imagen correspondiente
+                        print(f"Categoría seleccionada: {categoria_button_images[i]}")
+                        # Aquí iría la lógica para permitir al usuario seleccionar otra categoría o avanzar
+                        break
+                if next_button_rect.collidepoint(mouse_pos):
+                    # Aquí manejas el clic en el botón "Siguiente"
+                    # Por ejemplo, puedes verificar si se seleccionaron 3 categorías y luego iniciar el juego
+                    iniciar_juego()
 
-# Verificar si la solicitud fue exitosa
-if response.status_code == 200:
-    # Convertir la respuesta a JSON
-    data = response.json()
+    # Dibujar el fondo de la pantalla de inicio
+    screen.blit(background_image, (0, 0))
 
-    # Filtrar e imprimir solo las descripciones de los resultados de búsqueda, limitando a 3 líneas
-    for result in data['organic_results']:
-        lines = result['snippet'].split('\n')
-        if len(lines) > 3:
-            # Limita la descripción a las primeras 3 líneas
-            print('\n'.join(lines[:3]))
-        else:
-            print(result['snippet'])  # Muestra todo el texto si hay menos de 3 líneas
-else:
-    print(f"Error: {response.status_code}")
+    # Dibujar el título del juego
+    titulo_rect = titulo_image.get_rect()
+    titulo_rect.topleft = (50, 50)  # Ajusta esto según la posición deseada
+    screen.blit(titulo_image, titulo_rect)
+
+    # Dibujar el botón de inicio solo cuando el estado es 'inicio'
+    if estado_actual == 'inicio':
+        start_button_rect = start_button_image.get_rect(topleft=(210, 500))
+        screen.blit(start_button_image, start_button_rect)
+
+    # Dibujar los botones de categoría solo cuando el estado es 'seleccion_categorias'
+    if estado_actual == 'seleccion_categorias':
+        seleccionar_categoria()
+
+    # Actualizar la pantalla
+    pygame.display.flip()
+
+    # Controlar la velocidad de actualización
+    pygame.time.Clock().tick(60)
