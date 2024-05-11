@@ -293,4 +293,6 @@ class Juego:
     def obtener_pregunta_aleatoria(self):
         return random.choice(self.todas_las_preguntas)
 
+def obtener_categorias_y_preguntas():
+    return categorias
 
