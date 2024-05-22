@@ -296,3 +296,9 @@ class Juego:
 def obtener_categorias_y_preguntas():
     return categorias
 
+
+def crear_lista_preguntas():
+    todas_las_preguntas = []
+    for categoria in categorias.values():
+        todas_las_preguntas.extend(categoria)
+    return todas_las_preguntas
