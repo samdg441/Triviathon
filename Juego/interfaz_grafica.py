@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import requests
 from modulos import obtener_categorias_y_preguntas
 
 # Definir las categorías en el orden correcto
@@ -358,6 +359,36 @@ def on_50_50_button_click():
     # Actualizar la pantalla para reflejar los cambios
     mostrar_pantalla_juego()
 
+
+pygame.init()
+
+
+# Función para obtener ayuda de la IA
+def ayuda_api():
+    global pregunta_actual
+    api_key = 'b2696886ce070a16f352f6bf3a5a7a0a45df24c0f9375f3930099dc54870f654'
+    query = pregunta_actual.pregunta  # Accede al texto de la pregunta
+
+    num_results_per_page = 1
+    total_pages = 1
+    num = num_results_per_page * total_pages
+
+    response = requests.get(
+        f"https://serpapi.com/search?engine=duckduckgo&q={query}&api_key={api_key}&num={num}"
+    )
+
+    if response.status_code == 200:
+        data = response.json()
+        for result in data['organic_results']:
+            lines = result['snippet'].split('\n')
+            if len(lines) > 3:
+                return '\n'.join(lines[:3])
+            else:
+                return result['snippet']
+    else:
+        return f"Error: {response.status_code}"
+
+
 # Bucle principal del juego
 running = True
 while running:
@@ -383,7 +414,10 @@ while running:
                     on_change_question_button_click()  # Llamar a la función para cambiar la pregunta
                 elif button_5050_rect.collidepoint(mouse_pos):
                     on_50_50_button_click()  # Llamar a la función para eliminar dos respuestas incorrectas
-
+                elif button_ai_rect.collidepoint(mouse_pos):  # Verificar si se hizo clic en el botón de la IA
+                    texto_ayuda = ayuda_api()
+                    print("Ayuda de la IA:")
+                    print(texto_ayuda)
     # Dibujar el fondo de la pantalla
     screen.blit(background_image, (0, 0))
 

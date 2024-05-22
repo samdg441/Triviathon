@@ -51,6 +51,7 @@ class Ayuda:
             return None
         self.ayudas_usadas += 1
         return self.juego.obtener_pregunta_aleatoria()
+
     def ayuda_api(self, pregunta):
         if self.ayudas_usadas >= self.total_categorias:
             print("No puedes usar más ayudas.")
