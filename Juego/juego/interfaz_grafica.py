@@ -1,7 +1,6 @@
 import pygame
 import sys
 import random
-import requests
 from modulos import obtener_categorias_y_preguntas
 
 # Definir las categorías en el orden correcto
@@ -42,23 +41,23 @@ screen_height = 650
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Cargar las imágenes
-background_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\Captura.PNG"
+background_image_path = "Imagenes\\Captura.PNG"
 background_image = pygame.image.load(background_image_path)
 start_button_image = pygame.image.load(
-    "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.start-removebg-preview.png")
-titulo_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\titulo2-removebg-preview.png"
+    "Imagenes\\boton.start-removebg-preview.png")
+titulo_image_path = "Imagenes\\titulo2-removebg-preview.png"
 titulo_image = pygame.image.load(titulo_image_path)
-reglas_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\fondo3.PNG"  # Última imagen proporcionada
+reglas_image_path = "Imagenes\\fondo3.PNG"  # Última imagen proporcionada
 reglas_image = pygame.image.load(reglas_image_path)  # Aquí está la corrección
 
 # Cargar la imagen del botón "Siguiente"
 next_button_image = pygame.image.load(
-    "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.next-removebg-preview.png")
+    "Imagenes\\boton.next-removebg-preview.png")
 next_button_rect = next_button_image.get_rect(topleft=(210, 500))  # Ajusta x_pos y y_pos según la posición deseada
 
 # Cargar las imágenes de los botones de categoría dinámicamente
 categoria_button_images = [pygame.image.load(
-    f"C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\categoria-removebg-preview-{i}.png") for i in
+    f"Imagenes\\categoria-removebg-preview-{i}.png") for i in
     range(1, 9)]
 
 # Crear los rectángulos para los botones de categoría
@@ -69,20 +68,20 @@ for i, categoria_image in enumerate(categoria_button_images):
 
 
 # Definir el rectángulo para la imagen del título de las reglas
-reglas_titulo_imagen_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\titulo_reglas-removebg-preview.png"
+reglas_titulo_imagen_path = "Imagenes\\titulo_reglas-removebg-preview.png"
 reglas_titulo_imagen = pygame.image.load(reglas_titulo_imagen_path)
 reglas_titulo_imagen_rect = reglas_titulo_imagen.get_rect(
     topleft=(115, 10))  # Ajusta x_pos y y_pos según la posición deseada
 
-pregunta_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\casilla.texto.preguntas-removebg-preview.png"
+pregunta_image_path = "Imagenes\\casilla.texto.preguntas-removebg-preview.png"
 pregunta_image = pygame.image.load(pregunta_image_path)
-opcion_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.respuestas-removebg-preview.png"
+opcion_image_path = "Imagenes\\boton.respuestas-removebg-preview.png"
 
 
 # Cargar las imágenes de los botones de ayuda
-button_5050_image = pygame.image.load("C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.5050.png")
-button_change_question_image = pygame.image.load("C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.cambio.pregunta-removebg-preview.png")
-button_ai_image = pygame.image.load("C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\boton.Ia-removebg-preview.png")
+button_5050_image = pygame.image.load("Imagenes\\boton.5050.png")
+button_change_question_image = pygame.image.load("Imagenes\\boton.cambio.pregunta-removebg-preview.png")
+button_ai_image = pygame.image.load("Imagenes\\boton.Ia-removebg-preview.png")
 
 # Escalar las imágenes de los botones de ayuda al tamaño deseado
 button_5050_image = pygame.transform.scale(button_5050_image, (120, 82))
@@ -128,7 +127,7 @@ def mostrar_reglas():
     screen.blit(next_button_image, next_button_rect)
 
     # Cargar la imagen de texto de las reglas
-    reglas_texto_image_path = "C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\texto_reglas.PNG"
+    reglas_texto_image_path = "Imagenes\\texto_reglas.PNG"
     reglas_texto_image = pygame.image.load(reglas_texto_image_path)
     # Dibujar la imagen de texto de las reglas
     reglas_texto_rect = reglas_texto_image.get_rect()
@@ -220,7 +219,7 @@ def mostrar_pantalla_juego():
     global pregunta_actual
 
     # Cargar la imagen de fondo de la pregunta
-    pregunta_image = pygame.image.load('C:\\Users\\samue\\Triviathon\\pythonProject\\Juego\\Imagenes\\casilla.texto.preguntas-removebg-preview.png')
+    pregunta_image = pygame.image.load('Imagenes\\casilla.texto.preguntas-removebg-preview.png')
 
     # Dibujar el fondo de la pantalla
     screen.blit(reglas_image, (0, 0))
@@ -359,36 +358,6 @@ def on_50_50_button_click():
     # Actualizar la pantalla para reflejar los cambios
     mostrar_pantalla_juego()
 
-
-pygame.init()
-
-
-# Función para obtener ayuda de la IA
-def ayuda_api():
-    global pregunta_actual
-    api_key = 'b2696886ce070a16f352f6bf3a5a7a0a45df24c0f9375f3930099dc54870f654'
-    query = pregunta_actual.pregunta  # Accede al texto de la pregunta
-
-    num_results_per_page = 1
-    total_pages = 1
-    num = num_results_per_page * total_pages
-
-    response = requests.get(
-        f"https://serpapi.com/search?engine=duckduckgo&q={query}&api_key={api_key}&num={num}"
-    )
-
-    if response.status_code == 200:
-        data = response.json()
-        for result in data['organic_results']:
-            lines = result['snippet'].split('\n')
-            if len(lines) > 3:
-                return '\n'.join(lines[:3])
-            else:
-                return result['snippet']
-    else:
-        return f"Error: {response.status_code}"
-
-
 # Bucle principal del juego
 running = True
 while running:
@@ -414,10 +383,7 @@ while running:
                     on_change_question_button_click()  # Llamar a la función para cambiar la pregunta
                 elif button_5050_rect.collidepoint(mouse_pos):
                     on_50_50_button_click()  # Llamar a la función para eliminar dos respuestas incorrectas
-                elif button_ai_rect.collidepoint(mouse_pos):  # Verificar si se hizo clic en el botón de la IA
-                    texto_ayuda = ayuda_api()
-                    print("Ayuda de la IA:")
-                    print(texto_ayuda)
+
     # Dibujar el fondo de la pantalla
     screen.blit(background_image, (0, 0))
 
