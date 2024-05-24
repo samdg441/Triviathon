@@ -43,23 +43,23 @@ screen_height = 650
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Cargar las imágenes
-background_image_path = "Imagenes\\Captura.PNG"
+background_image_path = "..\\Imagenes\\Captura.PNG"
 background_image = pygame.image.load(background_image_path)
 start_button_image = pygame.image.load(
-    "Imagenes\\boton.start-removebg-preview.png")
-titulo_image_path = "Imagenes\\titulo2-removebg-preview.png"
+    "..\\Imagenes\\boton.start-removebg-preview.png")
+titulo_image_path = "..\\Imagenes\\titulo2-removebg-preview.png"
 titulo_image = pygame.image.load(titulo_image_path)
-reglas_image_path = "Imagenes\\fondo3.PNG"  # Última imagen proporcionada
+reglas_image_path = "..\\Imagenes\\fondo3.PNG"  # Última imagen proporcionada
 reglas_image = pygame.image.load(reglas_image_path)  # Aquí está la corrección
 
 # Cargar la imagen del botón "Siguiente"
 next_button_image = pygame.image.load(
-    "Imagenes\\boton.next-removebg-preview.png")
+    "..\\Imagenes\\boton.next-removebg-preview.png")
 next_button_rect = next_button_image.get_rect(topleft=(210, 500))  # Ajusta x_pos y y_pos según la posición deseada
 
 # Cargar las imágenes de los botones de categoría dinámicamente
 categoria_button_images = [pygame.image.load(
-    f"Imagenes\\categoria-removebg-preview-{i}.png") for i in
+    f"..\\Imagenes\\categoria-removebg-preview-{i}.png") for i in
     range(1, 9)]
 
 # Crear los rectángulos para los botones de categoría
@@ -70,20 +70,20 @@ for i, categoria_image in enumerate(categoria_button_images):
 
 
 # Definir el rectángulo para la imagen del título de las reglas
-reglas_titulo_imagen_path = "Imagenes\\titulo_reglas-removebg-preview.png"
+reglas_titulo_imagen_path = "..\\Imagenes\\titulo_reglas-removebg-preview.png"
 reglas_titulo_imagen = pygame.image.load(reglas_titulo_imagen_path)
 reglas_titulo_imagen_rect = reglas_titulo_imagen.get_rect(
     topleft=(115, 10))  # Ajusta x_pos y y_pos según la posición deseada
 
-pregunta_image_path = "Imagenes\\casilla.texto.preguntas-removebg-preview.png"
+pregunta_image_path = "..\\Imagenes\\casilla.texto.preguntas-removebg-preview.png"
 pregunta_image = pygame.image.load(pregunta_image_path)
-opcion_image_path = "Imagenes\\boton.respuestas-removebg-preview.png"
+opcion_image_path = "..\\Imagenes\\boton.respuestas-removebg-preview.png"
 
 
 # Cargar las imágenes de los botones de ayuda
-button_5050_image = pygame.image.load("Imagenes\\boton.5050.png")
-button_change_question_image = pygame.image.load("Imagenes\\boton.cambio.pregunta-removebg-preview.png")
-button_ai_image = pygame.image.load("Imagenes\\boton.Ia-removebg-preview.png")
+button_5050_image = pygame.image.load("..\\Imagenes\\boton.5050.png")
+button_change_question_image = pygame.image.load("..\\Imagenes\\boton.cambio.pregunta-removebg-preview.png")
+button_ai_image = pygame.image.load("..\\Imagenes\\boton.Ia-removebg-preview.png")
 
 # Escalar las imágenes de los botones de ayuda al tamaño deseado
 button_5050_image = pygame.transform.scale(button_5050_image, (120, 82))
@@ -129,7 +129,7 @@ def mostrar_reglas():
     screen.blit(next_button_image, next_button_rect)
 
     # Cargar la imagen de texto de las reglas
-    reglas_texto_image_path = "Imagenes\\texto_reglas.PNG"
+    reglas_texto_image_path = "..\\Imagenes\\texto_reglas.PNG"
     reglas_texto_image = pygame.image.load(reglas_texto_image_path)
     # Dibujar la imagen de texto de las reglas
     reglas_texto_rect = reglas_texto_image.get_rect()
@@ -223,7 +223,7 @@ def mostrar_pantalla_juego():
     global pregunta_actual
 
     # Cargar la imagen de fondo de la pregunta
-    pregunta_image = pygame.image.load('Imagenes\\casilla.texto.preguntas-removebg-preview.png')
+    pregunta_image = pygame.image.load('..\\Imagenes\\casilla.texto.preguntas-removebg-preview.png')
 
     # Dibujar el fondo de la pantalla
     screen.blit(reglas_image, (0, 0))
@@ -384,7 +384,7 @@ def mostrar_pantalla_final(nombre_jugador):
     # Cambiar el fondo de la pantalla final
     screen.fill((0, 0, 0))  # Rellenar la pantalla con negro
     # Aquí puedes cargar y mostrar la imagen de fondo que desees
-    fondo_final_image = pygame.image.load("Imagenes\\fondo4.PNG")
+    fondo_final_image = pygame.image.load("..\\Imagenes\\fondo4.PNG")
     screen.blit(fondo_final_image, (0, 0))
 
     # Mostrar el nombre del jugador y el número de respuestas correctas
