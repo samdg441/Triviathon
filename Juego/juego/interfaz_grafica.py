@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import requests
 from modulos import obtener_categorias_y_preguntas
 
 # Definir las categorías en el orden correcto
@@ -19,7 +20,7 @@ pantallas = {
     'seleccion_categorias': 'Pantalla de selección de categorías',
     'reglas': 'Pantalla de reglas',
     'juego': 'Pantalla de inicio del juego',
-    # Puedes agregar más pantallas aquí según sea necesario
+    'final': 'Pantalla de inicio del juego',
 }
 
 # Definir categorias_seleccionadas como una lista vacía
@@ -36,6 +37,7 @@ def cambiar_pantalla(nueva_pantalla):
 
 
 # Configurar la pantalla
+pygame.display.set_caption("Triviathon")
 screen_width = 660
 screen_height = 650
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -143,7 +145,7 @@ def seleccionar_categoria():
     global categorias_seleccionadas, estado_actual, banco_preguntas
 
     # Limpiar la lista de categorías seleccionadas
-    categorias_seleccionadas = []
+    categorias_seleccionadas.clear()  # Utiliza clear() para limpiar la lista sin reasignarla
 
     # Mostrar las categorías disponibles
     y_pos = 150
@@ -212,6 +214,8 @@ def seleccionar_categoria():
                         mostrar_mensaje_seleccion(
                             "Debes seleccionar entre una y tres categorías para iniciar el juego.")
 
+
+
 # Variable para almacenar la pregunta actual
 pregunta_actual = None
 
@@ -239,7 +243,7 @@ def mostrar_pantalla_juego():
     screen.blit(pregunta_image, (0, 0))
 
     # Texto de la pregunta
-    pregunta_font = pygame.font.Font(None, 30)
+    pregunta_font = pygame.font.Font(None, 24)  # Reducir el tamaño de la fuente
     pregunta_color = (0, 0, 0)  # Color negro
     pregunta_text_surface = pregunta_font.render(pregunta_actual.pregunta, True, pregunta_color)
     pregunta_text_rect = pregunta_text_surface.get_rect(center=(pregunta_image.get_width() // 2, pregunta_image.get_height() // 2))
@@ -254,7 +258,7 @@ def mostrar_pantalla_juego():
     ]
 
     # Dibujar las opciones en la matriz 2x2
-    opciones_font = pygame.font.Font(None, 24)
+    opciones_font = pygame.font.Font(None, 20)  # Reducir el tamaño de la fuente
     opciones_color = (0, 0, 0)
     opcion_rects = []  # Lista para almacenar los rectángulos de las opciones
 
@@ -319,6 +323,94 @@ def verificar_respuesta(respuesta_elegida):
 
 
 # Función para cargar la siguiente pregunta
+
+
+def on_change_question_button_click():
+    global pregunta_actual,ayuda_disponibles
+    pregunta_actual = None
+    # Restar una ayuda disponible
+    ayuda_disponibles -= 1
+    mostrar_pantalla_juego()
+    pygame.display.flip()
+def on_50_50_button_click():
+    global pregunta_actual, ayuda_disponibles
+    # Seleccionar dos índices aleatorios para eliminar dos respuestas incorrectas
+    indices_incorrectos = []
+    while len(indices_incorrectos) < 2:
+        indice = random.randint(0, 3)
+        respuesta = pregunta_actual.respuestas[indice]
+        if respuesta != pregunta_actual.respuesta_correcta and indice not in indices_incorrectos:
+            indices_incorrectos.append(indice)
+
+    # Establecer el texto de las respuestas incorrectas seleccionadas en una cadena vacía
+    for indice in indices_incorrectos:
+        pregunta_actual.respuestas[indice] = ""
+        ayuda_disponibles -= 1  # Reducir una ayuda disponible
+
+    # Actualizar la pantalla para reflejar los cambios
+    mostrar_pantalla_juego()
+    pygame.display.flip()
+def ayuda_api():
+    global pregunta_actual, ayuda_disponibles
+    api_key = 'b2696886ce070a16f352f6bf3a5a7a0a45df24c0f9375f3930099dc54870f654'
+    query = pregunta_actual.pregunta  # Accede al texto de la pregunta
+
+    num_results_per_page = 1
+    total_pages = 1
+    num = num_results_per_page * total_pages
+
+    response = requests.get(
+        f"https://serpapi.com/search?engine=duckduckgo&q={query}&api_key={api_key}&num={num}"
+    )
+
+    if response.status_code == 200:
+        data = response.json()
+        for result in data['organic_results']:
+            lines = result['snippet'].split('\n')
+            if len(lines) > 3:
+                texto_ayuda = '\n'.join(lines[:3])
+            else:
+                texto_ayuda = result['snippet']
+            ayuda_disponibles -= 1  # Reducir una ayuda disponible
+            # Mostrar el texto de ayuda
+            print("Ayuda de la IA:")
+            print(texto_ayuda)
+    else:
+        print(f"Error: {response.status_code}")
+
+    pygame.display.flip()
+
+def mostrar_pantalla_final(nombre_jugador):
+    # Cambiar el fondo de la pantalla final
+    screen.fill((0, 0, 0))  # Rellenar la pantalla con negro
+    # Aquí puedes cargar y mostrar la imagen de fondo que desees
+    fondo_final_image = pygame.image.load("Imagenes\\fondo4.PNG")
+    screen.blit(fondo_final_image, (0, 0))
+
+    # Mostrar el nombre del jugador y el número de respuestas correctas
+    font = pygame.font.SysFont(None, 30)
+    texto_nombre = font.render(f"Jugador: {nombre_jugador}", True, (255, 255, 255))
+    texto_respuestas = font.render(f"Respuestas correctas: {contador_respuestas_correctas}", True, (255, 255, 255))
+    screen.blit(texto_nombre, (250, 200))
+    screen.blit(texto_respuestas, (250, 250))
+
+    # Mostrar las categorías seleccionadas
+    y_pos = 300
+    for categoria in categorias_seleccionadas:
+        texto_categoria = font.render(categoria, True, (255, 255, 255))
+        screen.blit(texto_categoria, (240, y_pos))
+        y_pos += 30
+
+def on_game_end():
+    mostrar_pantalla_final(nombre_jugador)
+    global estado_actual
+    estado_actual = 'final'  # Cambiar al estado final
+    running= False
+
+running = True
+ayuda_disponibles = len(categorias_seleccionadas)  # Inicializar las ayudas disponibles al número de categorías seleccionadas
+total_preguntas = 0  # Inicializar el total de preguntas
+
 def cargar_siguiente_pregunta():
     global pregunta_actual
 
@@ -333,33 +425,9 @@ def cargar_siguiente_pregunta():
 
     # Después de cargar la siguiente pregunta, mostrarla en la pantalla
     mostrar_pantalla_juego()
+
 contador_respuestas_correctas = 0
 
-def on_change_question_button_click():
-    global pregunta_actual
-    pregunta_actual = None
-    mostrar_pantalla_juego()
-
-def on_50_50_button_click():
-    global pregunta_actual
-
-    # Seleccionar dos índices aleatorios para eliminar dos respuestas incorrectas
-    indices_incorrectos = []
-    while len(indices_incorrectos) < 2:
-        indice = random.randint(0, 3)
-        respuesta = pregunta_actual.respuestas[indice]
-        if respuesta != pregunta_actual.respuesta_correcta and indice not in indices_incorrectos:
-            indices_incorrectos.append(indice)
-
-    # Establecer el texto de las respuestas incorrectas seleccionadas en una cadena vacía
-    for indice in indices_incorrectos:
-        pregunta_actual.respuestas[indice] = ""
-
-    # Actualizar la pantalla para reflejar los cambios
-    mostrar_pantalla_juego()
-
-# Bucle principal del juego
-running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -376,13 +444,35 @@ while running:
             elif estado_actual == 'reglas':
                 mostrar_reglas()
                 nombre_jugador = pedir_nombre()
-                print(f"Bienvenido, {nombre_jugador}! Ahora que conoces las reglas, ¡prepárate para jugar!")
+                print(f"Bienvenido, {nombre_jugador} Ahora que conoces las reglas, ¡prepárate para jugar!")
                 on_next_button_click()  # Llamar a la función para cambiar a la pantalla de selección de categorías
             elif estado_actual == 'juego':
                 if button_change_question_rect.collidepoint(mouse_pos):
                     on_change_question_button_click()  # Llamar a la función para cambiar la pregunta
                 elif button_5050_rect.collidepoint(mouse_pos):
                     on_50_50_button_click()  # Llamar a la función para eliminar dos respuestas incorrectas
+                    ayuda_disponibles -= 1  # Reducir una ayuda disponible
+                elif button_ai_rect.collidepoint(mouse_pos):  # Verificar si se hizo clic en el botón de la IA
+                    texto_ayuda = ayuda_api()
+                    print("Ayuda de la IA:")
+                    print(texto_ayuda)
+                    ayuda_disponibles -= 1  # Reducir una ayuda disponible
+
+                # Verificar si se produce un evento de clic del mouse en la pantalla de juego
+                for i, opcion_rect in enumerate(opcion_rects):
+                    if opcion_rect.collidepoint(mouse_pos):
+                        if pregunta_actual.respuestas[i] == pregunta_actual.respuesta_correcta:
+                            contador_respuestas_correctas += 1
+                            if total_preguntas == ayuda_disponibles * 5:
+                                estado_actual = 'final'
+                                on_game_end()
+                            else:
+                                # Preparar la siguiente pregunta
+                                total_preguntas += 1  # Incrementar el total de preguntas
+                                cargar_siguiente_pregunta()  # Llamar a la función para cargar la siguiente pregunta
+                        else:
+                            estado_actual = 'final'
+                            on_game_end()
 
     # Dibujar el fondo de la pantalla
     screen.blit(background_image, (0, 0))
@@ -413,7 +503,6 @@ while running:
                 y_pos += 120  # Ajustar la posición en y para la nueva fila
             else:
                 x_pos += 220  # Ajustar la posición en x para la siguiente columna
-
         # Dibujar el botón "Next" debajo de las categorías
         screen.blit(next_button_image, next_button_rect)
 
@@ -424,23 +513,17 @@ while running:
     # Dibujar la pantalla de juego solo cuando el estado es 'juego'
     if estado_actual == 'juego':
         opcion_rects = mostrar_pantalla_juego()  # Llamar a la función y obtener los rectángulos de las opciones
+        # Inicializar el contador de ayudas al número de categorías seleccionadas
+        ayuda_disponibles = len(categorias_seleccionadas)
 
-        # Verificar si se produce un evento de clic del mouse en la pantalla de juego
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                for i, opcion_rect in enumerate(opcion_rects):  # Usar los rectángulos de las opciones
-                    if opcion_rect.collidepoint(mouse_pos):
-                        # Verificar si la opción seleccionada es la correcta
-                        if pregunta_actual.respuestas[i] == pregunta_actual.respuesta_correcta:
-                            # Incrementar el contador de respuestas correctas
-                            contador_respuestas_correctas += 1
-                            # Cargar la siguiente pregunta
-                            pregunta_actual = None
-                        # Implementar lógica para mostrar la siguiente pregunta y actualización del juego
+    # Verificar si el juego ha terminado y mostrar la pantalla final
+    if estado_actual == 'final':
+        mostrar_pantalla_final(nombre_jugador)
+        # Detener el bucle principal
 
-    # Actualizar la pantalla
+
+    # Actualiza la pantalla
     pygame.display.flip()
 
-    # Controlar la velocidad de actualización
+    # Controla la velocidad de actualización
     pygame.time.Clock().tick(60)
