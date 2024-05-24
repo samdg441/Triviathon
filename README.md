@@ -39,8 +39,11 @@ El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez qu
 
 <h2>Requisitos funcionales de consola</h2>
 1.	Generar preguntas aleatorias
+
 2.	Generar ayudas
+
 3.	Evaluar respuesta del jugador
+
 4.	Registrar puntos
 
 <h2>Requisitos funcionales de Interfaz</h2>
