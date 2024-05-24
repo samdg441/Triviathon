@@ -45,9 +45,13 @@ El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez qu
 
 <h2>Requisitos funcionales de Interfaz</h2>
 1.	Registrar al usuario
+
 2.	Seleccionar categoría
+
 3.	Iniciar el juego
+
 4.	Finalizar la ronda
+
 5.	Visualizar la puntuación
 
 <image src="assets/uml/uml.png" alt="Descripción de la imagen">
