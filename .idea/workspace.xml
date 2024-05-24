@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9411b103-7f37-4b96-bd59-cca1d3c0206b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modelo/images/diagrama_final.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="9411b103-7f37-4b96-bd59-cca1d3c0206b" name="Changes" comment="# Commit changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +55,7 @@
     "Python.modulos.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/user/PycharmProjects/Triviathon/modelo/images",
+    "last_opened_file_path": "C:/Users/user/PycharmProjects/Triviathon/Juego/juego",
     "settings.editor.selected.configurable": "vcs.Git"
   }
 }]]></component>
@@ -157,6 +151,15 @@
       <option name="presentableId" value="Default" />
       <updated>1716393772301</updated>
     </task>
+    <task id="LOCAL-00001" summary="# Commit changes">
+      <option name="closed" value="true" />
+      <created>1716526738042</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716526738042</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,5 +184,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="# Commit changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="# Commit changes" />
   </component>
 </project>
