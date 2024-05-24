@@ -147,16 +147,16 @@ categorias = {
         Pregunta("¿Qué actor interpretó a Jack en la película 'Titanic'?", ["Leonardo DiCaprio", "Brad Pitt", "Johnny Depp", "Matt Damon"], "Leonardo DiCaprio", "Entretenimiento"),
         Pregunta("¿Quién dirigió la película 'El Padrino'?", ["Martin Scorsese", "Steven Spielberg", "Francis Ford Coppola", "Alfred Hitchcock"], "Francis Ford Coppola", "Entretenimiento"),
         Pregunta("¿En qué película animada aparece el personaje Buzz Lightyear?", ["Toy Story", "Shrek", "Frozen", "Monsters, Inc."], "Toy Story", "Entretenimiento"),
-       Pregunta("¿Quién es el actor que interpreta a Tony Stark / Iron Man en el Universo Cinematográfico de Marvel?", ["Robert Downey Jr.", "Chris Evans", "Chris Hemsworth", "Mark Ruffalo"], "Robert Downey Jr.", "Entretenimiento"),
+       Pregunta("¿Quién es el actor que interpreta a Iron Man en el MCU?", ["Robert Downey Jr.", "Chris Evans", "Chris Hemsworth", "Mark Ruffalo"], "Robert Downey Jr.", "Entretenimiento"),
         Pregunta("¿Cuál es el nombre del director de la película 'Inception'?", ["Christopher Nolan", "Steven Spielberg", "Quentin Tarantino", "Martin Scorsese"], "Christopher Nolan", "Entretenimiento"),
          Pregunta("¿Quién es el director de la trilogía 'El Señor de los Anillos'?", ["Peter Jackson", "George Lucas", "James Cameron", "Steven Spielberg"], "Peter Jackson", "Entretenimiento"),
-        Pregunta("¿Cuál es el nombre del actor que interpreta a Sherlock Holmes en la serie de la BBC 'Sherlock'?", ["Benedict Cumberbatch", "Martin Freeman", "Tom Hiddleston", "Daniel Radcliffe"], "Benedict Cumberbatch", "Entretenimiento")
+        Pregunta("¿Quién es el actor que hace de Sherlock Holmes en la serie de 'Sherlock'?", ["Benedict Cumberbatch", "Martin Freeman", "Tom Hiddleston", "Daniel Radcliffe"], "Benedict Cumberbatch", "Entretenimiento")
     ],
     "Ciencia Ficción": [
         Pregunta("¿Qué autor escribió '1984'?", ["Aldous Huxley", "Ray Bradbury", "George Orwell", "Philip K. Dick"], "George Orwell", "Ciencia Ficción"),
         Pregunta("¿Cuál es el nombre del robot en la película 'Blade Runner'?", ["HAL 9000", "C-3PO", "R2-D2", "Roy Batty"], "Roy Batty", "Ciencia Ficción"),
-        Pregunta("¿Cuál es el nombre del androide interpretado por Rutger Hauer en 'Blade Runner'?", ["HAL 9000", "C-3PO", "R2-D2", "Roy Batty"], "Roy Batty", "Ciencia Ficción"),
-        Pregunta("¿Quién escribió la novela 'El fin de la eternidad'?", ["Isaac Asimov", "Arthur C. Clarke", "Robert A. Heinlein", "Isaac Asimov"], "Isaac Asimov", "Ciencia Ficción"),
+        Pregunta("¿Cuál es el nombre del robot interpretado por Rutger Hauer en 'Blade Runner'?", ["HAL 9000", "C-3PO", "R2-D2", "Roy Batty"], "Roy Batty", "Ciencia Ficción"),
+        Pregunta("¿Quién escribió la novela 'El fin de la eternidad'?", ["Leonardo Dicaprio", "Arthur C. Clarke", "Robert A. Heinlein", "Isaac Asimov"], "Isaac Asimov", "Ciencia Ficción"),
         Pregunta("¿Cuál es el nombre del robot en la película 'WALL-E'?", ["EVE", "R2-D2", "C-3PO", "WALL-E"], "WALL-E", "Ciencia Ficción"),
         Pregunta("¿Quién escribió la novela 'Neuromante'?", ["Isaac Asimov", "Philip K. Dick", "Arthur C. Clarke", "William Gibson"], "William Gibson", "Ciencia Ficción"),
         Pregunta("¿Cuál es el nombre del protagonista en la saga 'Star Wars'?", ["Luke Skywalker", "Darth Vader", "Han Solo", "Princesa Leia"], "Luke Skywalker", "Ciencia Ficción"),
@@ -292,7 +292,18 @@ class Juego:
             })
 
     def obtener_pregunta_aleatoria(self):
-        return random.choice(self.todas_las_preguntas)
+        if not hasattr(self, 'preguntas_seleccionadas'):
+            self.preguntas_seleccionadas = []
+
+        preguntas_disponibles = [pregunta for pregunta in self.todas_las_preguntas if
+                                 pregunta not in self.preguntas_seleccionadas]
+
+        if preguntas_disponibles:
+            pregunta_seleccionada = random.choice(preguntas_disponibles)
+            self.preguntas_seleccionadas.append(pregunta_seleccionada)
+            return pregunta_seleccionada
+        else:
+            return "Ya se han seleccionado todas las preguntas"
 
 def obtener_categorias_y_preguntas():
     return categorias
