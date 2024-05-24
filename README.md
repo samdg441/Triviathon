@@ -14,7 +14,7 @@ El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez qu
 
 <image src="assets/uml/uml.png" alt="Descripción de la imagen">
 
-#Word
+# Word
 
 [Documentación en Word](assets/word/Proyecto%20POO.docx)
 
