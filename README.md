@@ -11,7 +11,10 @@ Si el jugador elige una sola categoría, solo podrá utilizar una ayuda en toda 
 El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez que una ronda finaliza, se le da al jugador la opción de continuar a la siguiente ronda o finalizar el juego. Si decide continuar a la siguiente ronda, deberá escoger nuevamente entre 1 y 3 categorías, las cuales no pueden repetirse con las categorías de la ronda anterior. Al finalizar el juego, se muestra al jugador las rondas que jugó, los puntos obtenidos y las categorías elegidas en cada ronda.
 
 </p>
-Requisitos funcionales
+
+
+
+<h2>Requisitos funcionales</h2>
 1.	Registrar al usuario
 2.	Seleccionar Categoría
 3.	Iniciar el juego
@@ -26,13 +29,13 @@ Requisitos funcionales
 
 
 
-Requisitos funcionales de consola
+<h2>Requisitos funcionales de consola</h2>
 1.	Generar preguntas aleatorias
 2.	Generar ayudas
 3.	Evaluar respuesta del jugador
 4.	Registrar puntos
 
-Requisitos funcionales de Interfaz
+<h2>Requisitos funcionales de Interfaz</h2>
 1.	Registrar al usuario
 2.	Seleccionar categoría
 3.	Iniciar el juego
