@@ -16,13 +16,21 @@ El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez qu
 
 <h2>Requisitos funcionales</h2>
 1.	Registrar al usuario
+
 2.	Seleccionar Categoría
+
 3.	Iniciar el juego
+
 4.	Generar preguntas aleatorias
+
 5.	Generar ayudas
+
 6.	Evaluar respuesta del jugador 
+
 7.	Registrar puntos 
+
 8.	Finalizar la ronda
+
 9.	Visualizar la puntuación
 
 
