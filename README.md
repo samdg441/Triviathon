@@ -8,7 +8,8 @@ Durante el juego, los jugadores disponen de 3 opciones de ayuda: 1. "50/50", que
 
 Si el jugador elige una sola categoría, solo podrá utilizar una ayuda en toda la ronda. Si opta por 2 categorías, tendrá acceso a 2 ayudas, y si selecciona 3 categorías, podrá utilizar las 3 ayudas disponibles. Las ayudas se utilizan en el orden elegido por el jugador y una vez agotadas, quedan bloqueadas.
 
-El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez que una ronda finaliza, se le da al jugador la opción de continuar a la siguiente ronda o finalizar el juego. Si decide continuar a la siguiente ronda, deberá escoger nuevamente entre 1 y 3 categorías, las cuales no pueden repetirse con las categorías de la ronda anterior. Al finalizar el juego, se muestra al jugador las rondas que jugó, los puntos obtenidos y las categorías elegidas en cada ronda.
+Una vez que una ronda finaliza, pasa a la siguiente ronda, con la siguiente pregunta. Al finalizar el juego, se muestran: su nombre, las respuestas respondidas de manera correctas que serán también los puntos obtenidos y las categorías elegidas en cada ronda.
+
 
 </p>
 
