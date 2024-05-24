@@ -57,9 +57,11 @@ El jugador tiene la opción de jugar hasta 3 rondas si así lo desea. Una vez qu
 
 5.	Visualizar la puntuación
 
+<h1>Modelo del Mundo</h1>
+
 <image src="assets/uml/uml.png" alt="Descripción de la imagen">
 
-# Word
+<h2>Documentación</h2>
 
-[Documentación en Word](assets/word/Proyecto%20POO.docx)
+[Presiona aquí para abrir el Word](assets/word/Proyecto%20POO.docx)
 
