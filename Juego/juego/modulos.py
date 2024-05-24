@@ -314,3 +314,4 @@ def crear_lista_preguntas():
     for categoria in categorias.values():
         todas_las_preguntas.extend(categoria)
     return todas_las_preguntas
+#Final del codigo

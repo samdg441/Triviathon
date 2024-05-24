@@ -527,3 +527,5 @@ while running:
 
     # Controla la velocidad de actualización
     pygame.time.Clock().tick(60)
+
+    #final del codigo
